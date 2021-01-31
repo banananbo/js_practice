@@ -5,8 +5,12 @@
 </template>
 
 <script lang="ts">
+export type DataType ={
+      greeting:string
+}
+
 export default {
-  data() {
+  data():DataType{
     return {
       greeting: ''
     };
@@ -15,7 +19,7 @@ export default {
     this.greeting = 'hello';
   },
   computed:{
-      computed_greeting(){
+      computed_greeting():string{
           return this.greeting;
       }
   }

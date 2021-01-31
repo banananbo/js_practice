@@ -369,5 +369,27 @@ ERROR in /home/obana/js/vue/test5/src/Hello.vue.ts
 [tsl] ERROR in /home/obana/js/vue/test5/src/Hello.vue.ts(19,11)
       TS2322: Type 'number' is not assignable to type 'string'.
 ```
-
+## Hello.vueをもうすこしTypeScriptっぽく
+```Hello.vue
+<script lang="ts">
+export type DataType ={
+      greeting:string
+}
+export default {
+  data():DataType{
+    return {
+      greeting: ''
+    };
+  },
+  created() {
+    this.greeting = 'hello';
+  },
+  computed:{
+      computed_greeting():string{
+          return this.greeting;
+      }
+  }
+}
+</script>
+```
 
