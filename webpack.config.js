@@ -41,6 +41,14 @@ module.exports = {
         }
       ]
   },
+  resolve: {
+    alias: {
+      '@src': path.join(__dirname, 'src'),
+      '@lib': path.join(__dirname, 'src/lib'),
+      '@pages': path.join(__dirname, 'src/pages'),
+      vue: 'vue/dist/vue.esm.js',
+    }
+  },
   plugins: [
     new VueLoaderPlugin()
   ],
