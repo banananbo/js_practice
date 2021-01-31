@@ -393,3 +393,113 @@ export default {
 </script>
 ```
 
+
+
+## webpack.configにエイリアスを登録
+webpackでファイルをインポートする際に、パスの指定がしやすくなります。
+```webpack.config
+  resolve: {
+    alias: {
+      '@src': path.join(__dirname, 'src'),
+      '@lib': path.join(__dirname, 'src/lib'),
+      '@pages': path.join(__dirname, 'src/pages'),
+      vue: 'vue/dist/vue.esm.js',
+    }
+  },
+```
+
+## webpackをスクリプトに登録
+```package.json
+  "scripts": {
+    "dev": "webpack --watch"
+  }
+```
+yarn dev で、上記のスクリプトが呼ばれ、ファイル変更後即座にwebpackが動いてくれるようになります。
+webpackの設定などを変更した場合は一度止めて再度実行しないと適用されないので注意。
+
+## vue-router対応
+```sh
+yarn add --dev vue-router
+```
+
+### Hello.vue を pages配下に移動　コピーして、Home.vueを作成
+
+### app.vueに追加
+```app.js
+import Vue from 'vue';
+import Home from '@pages/Home.vue';
+import Hello from '@pages/Hello.vue';
+import VueRouter from 'vue-router';
+
+
+let routes = [
+  { name:"home"  ,path: '/', component: Home },
+  { name:"hello" ,path: '/hello', component: Hello },
+]
+
+Vue.use(VueRouter);
+const router = new VueRouter({
+  routes
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  // new Vue(Hello).$mount('#app');
+  new Vue({
+    el: '#app',
+    router: router
+  });
+});
+```
+
+### index.html
+```index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>TEST</title>
+    <script src="js/app.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <router-link to="/">home</router-link>
+      <router-link to="/hello">hello</router-link>
+      <router-view></router-view>
+    </div>
+  </body>
+</html>
+```
+
+### 動作確認
+これでvue-routerが動作しました。
+
+### routeを外だし
+```routes.ts
+import Home from '@pages/Home.vue';
+import Hello from '@pages/Hello.vue';
+
+export default [
+    { name:"home"  ,path: '/', component: Home },
+    { name:"hello" ,path: '/hello', component: Hello },
+];
+```
+```app.ts
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import routes from '@src/router.ts';
+
+Vue.use(VueRouter);
+const router = new VueRouter({
+  routes
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  // new Vue(Hello).$mount('#app');
+  new Vue({
+    el: '#app',
+    router: router
+  });
+});
+```
+
+
