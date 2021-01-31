@@ -475,26 +475,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### routeを外だし
 ```routes.ts
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 import Home from '@pages/Home.vue';
 import Hello from '@pages/Hello.vue';
 
-export default [
+let routes = [
     { name:"home"  ,path: '/', component: Home },
     { name:"hello" ,path: '/hello', component: Hello },
 ];
+
+Vue.use(VueRouter);
+export default  new VueRouter({
+  routes
+});
 ```
 ```app.ts
 import Vue from 'vue';
-import VueRouter from 'vue-router';
-import routes from '@src/router.ts';
-
-Vue.use(VueRouter);
-const router = new VueRouter({
-  routes
-});
+import router from '@src/router.ts';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // new Vue(Hello).$mount('#app');
   new Vue({
     el: '#app',
     router: router
@@ -502,4 +502,90 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
+### vuex 
+```sh
+yarn add --dev vuex
+```
+
+## app.tsに追加
+```app.ts
+import Vue from 'vue';
+import router from '@src/router.ts';
+import Vuex from 'vuex'
+
+interface State {
+  test: string
+}
+
+let store = new Vuex.Store({
+  state: {
+    test: "Test Vuex"
+  } as State,
+  modules:{
+  },
+  mutations:{
+  },
+  getters:{
+  },
+  actions:{
+  }
+})
+
+document.addEventListener('DOMContentLoaded', () => {
+  new Vue({
+    el: '#app',
+    router: router,
+    store: store
+  });
+});
+```
+
+## Home.vueで参照を確認
+ひとまず動けば良い
+```Home.vue
+<template>
+    <p>{{ this.$store.state.test }} World!</p>
+</template>
+```
+
+## vuexを分離
+```app.ts
+import Vue from 'vue';
+import router from '@src/router.ts';
+import store from '@src/store/index.ts';
+
+document.addEventListener('DOMContentLoaded', () => {
+  new Vue({
+    el: '#app',
+    router: router,
+    store: store
+  });
+});
+```
+
+```store/index.ts
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex);
+
+interface State {
+  test: string
+}
+
+export default new Vuex.Store({
+  state: {
+    test: "Test Vuex"
+  } as State,
+  modules:{
+  },
+  mutations:{
+  },
+  getters:{
+  },
+  actions:{
+  }
+})
+```
+一応vuexが動いていることが確認できた。
 

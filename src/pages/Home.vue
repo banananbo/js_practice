@@ -1,5 +1,5 @@
 <template>
-    <p>{{ computed_greeting }} World!</p>
+    <p>{{ this.$store.state.test }} World!</p>
 </template>
 
 <script lang="ts">
